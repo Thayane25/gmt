@@ -1,85 +1,79 @@
-import React, { useState } from "react";
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
-  ActivityIndicator,
-} from "react-native";
-import { useRouter } from "expo-router";
-import { Colors } from "@/constants/Colors";
-import { loginUser } from "../../lib/appwrite"; // Importe a função de login
+import React, { useState } from 'react';
+import { View, TextInput, StyleSheet, Text, TouchableOpacity, SafeAreaView } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Colors } from '@/constants/Style';
+import { loginUser } from '../../lib/appwrite';  // Importe a função de login
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // Estado para exibir mensagens de erro
+  const router = useRouter(); // Inicializa o router para navegação
 
   const handleLogin = async () => {
-    setErrorMessage("");
-    setLoading(true);
+    setErrorMessage(''); // Limpa qualquer mensagem de erro anterior
     try {
-      await loginUser(email, password);
-      router.push("/home");
+      const response = await loginUser(email, password); // Usando a função de login correta
+      console.log('Login successful:', response);
+      router.push('/home'); // Redireciona para a página inicial após o login
     } catch (error) {
-      setErrorMessage(error.message);
-    } finally {
-      setLoading(false);
+      console.error('Login failed:', error.message);
+      setErrorMessage(error.message); // Exibe a mensagem de erro
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.card}>
-          <Text style={styles.title}>Bem-vindo!</Text>
-          <Text style={styles.subtitle}>Faça login para continuar</Text>
+      <Text style={styles.title}>Bem-vindo!</Text>
+      <Text style={styles.subtitle}>Faça login para continuar</Text>
 
-          {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
+      {/* Exibição de mensagem de erro */}
+      {errorMessage ? (
+        <Text style={styles.errorText}>{errorMessage}</Text>
+      ) : null}
 
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            placeholderTextColor="#aaa"
-          />
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+        placeholderTextColor="#aaa"
+      />
 
-          <TextInput
-            style={styles.input}
-            placeholder="Senha"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            placeholderTextColor="#aaa"
-          />
+      <TextInput
+        style={styles.input}
+        placeholder="Senha"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        placeholderTextColor="#aaa"
+      />
 
-          <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-            {loading ? (
-              <ActivityIndicator size="small" color="#fff" />
-            ) : (
-              <Text style={styles.buttonText}>Entrar</Text>
-            )}
-          </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Entrar</Text>
+      </TouchableOpacity>
 
-          <Text style={styles.footerText}>
-            Não tem uma conta?{" "}
-            <Text style={styles.link} onPress={() => router.push("/sign-up")}>
-              Registre-se
-            </Text>
-          </Text>
-        </View>
-      </ScrollView>
+      <Text style={styles.footerText}>
+        Não tem uma conta?{' '}
+        <Text
+          style={styles.link}
+          onPress={() => {
+            router.push('/sign-up');
+          }}
+        >
+          Registre-se
+        </Text>
+      </Text>
+        <Text
+          style={styles.linkhome}
+          onPress={() => {
+            router.push('/home');
+          }}
+        >
+          home
+        </Text>
     </SafeAreaView>
   );
 };
@@ -87,78 +81,63 @@ const SignIn = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.primary,
-    alignItems: "center",
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  card: {
-    backgroundColor: Colors.secondary,
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
-    borderRadius: 15,
-    width: "100%",
-    maxWidth: 400,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 8,
+    backgroundColor: Colors.primary,
   },
   title: {
-    fontSize: 28,
-    color: Colors.accent,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontSize: 24,
+    fontWeight: 'bold',
     marginBottom: 10,
+    color: Colors.white,
   },
   subtitle: {
-    fontSize: 18,
-    color: "#ccc",
-    textAlign: "center",
+    fontSize: 16,
+    color: Colors.white,
     marginBottom: 20,
   },
   input: {
-    backgroundColor: Colors.white,
-    color: "#000",
     width: '100%',
-    borderRadius: 8,
     padding: 15,
-    marginBottom: 15,
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: '#ccc',
+    borderRadius: 8,
+    marginBottom: 15,
+    backgroundColor: Colors.white,
+    color: '#000',
   },
   button: {
+    width: '100%',
+    padding: 15,
     backgroundColor: Colors.accent,
     borderRadius: 8,
-    padding: 15,
-    alignItems: "center",
-    marginTop: 10,
+    alignItems: 'center',
   },
   buttonText: {
     color: Colors.white,
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  errorText: {
-    color: "#FF4D4D",
     fontSize: 16,
-    marginBottom: 15,
-    textAlign: "center",
+    fontWeight: 'bold',
   },
   footerText: {
-    color: "#ccc",
-    textAlign: "center",
-    marginTop: 15,
+    marginTop: 20,
+    fontSize: 14,
+    color: Colors.white,
   },
   link: {
     color: Colors.accent,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
+  linkhome: {
+    color: Colors.primary,
+    fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',  // Cor para erros
+    fontSize: 14,
+    marginBottom: 15,
+    fontWeight: 'bold',
+  }
 });
 
 export default SignIn;
-
- 
