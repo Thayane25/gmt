@@ -9,9 +9,9 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import { useRouter } from "expo-router"; 
-import { Colors, messageBoxStyle } from "@/constants/Colors";
-import { createUser } from "../../lib/appwrite";
+import { useRouter } from "expo-router"; // Usando o hook do Expo Router
+import { Colors, messageBoxStyle } from "@/constants/Style";
+import { createUser } from "../../lib/appwrite"; // Certifique-se de importar a função de criação corretamente
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -26,13 +26,13 @@ const SignUp = () => {
       await createUser(email, password, username);
       showMessage({
         text: "Cadastro realizado com sucesso!",
-        style: messageBoxStyle.successMessage,
+        style: MessageBoxStyle.successMessage,
       });
       setTimeout(() => router.push("/sign-in"), 3000);
     } catch (error) {
       showMessage({
         text: error.message,
-        style: messageBoxStyle.errorMessage,
+        style: MessageBoxStyle.errorMessage,
       });
     }
   };
@@ -87,9 +87,10 @@ const SignUp = () => {
             placeholderTextColor="#aaa"
           />
 
-          <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-            <Text style={styles.buttonText}>Cadastrar</Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+          <Text style={styles.buttonText}>Cadastrar</Text>
+        </TouchableOpacity>
+      </View>
 
           <Text style={styles.footerText}>
             Já tem uma conta?{" "}
@@ -98,13 +99,13 @@ const SignUp = () => {
             </Text>
           </Text>
 
-          {message?.text && (
-            <Animated.View style={[messageBoxStyle.messageContainer, { opacity: fadeAnim }]}>
-              <Text style={message.style}>{message.text}</Text>
-            </Animated.View>
-          )}
-        </View>
-      </ScrollView>
+      {message?.text && (
+        <Animated.View
+          style={[messageBoxStyle.messageContainer, { opacity: fadeAnim }]}
+        >
+          <Text style={message.style}>{message.text}</Text>
+        </Animated.View>
+      )}
     </SafeAreaView>
   );
 };
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: Colors.white,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
   },
   footerText: {

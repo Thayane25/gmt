@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Colors } from "@/constants/Colors";
-import { loginUser } from "../../lib/appwrite";
+import { loginUser } from "../../lib/appwrite"; // Importe a função de login
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
