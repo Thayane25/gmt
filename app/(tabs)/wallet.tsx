@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
-import { Feather } from "@expo/vector-icons"; // Para ícones
+import { Feather } from "@expo/vector-icons"; 
 import { Colors, QuantityAdjustmentStyle } from "@/constants/Style";
 
 const Wallet = () => {
@@ -97,7 +97,7 @@ const Wallet = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.primary, // Cor de fundo
+    backgroundColor: Colors.primary, 
     padding: 20,
   },
   balanceContainer: {
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   actionCard: {
-    width: "48%", // Tamanho das ações para 2 por linha
+    width: "48%", 
     backgroundColor: Colors.secondary,
     borderRadius: 8,
     padding: 15,

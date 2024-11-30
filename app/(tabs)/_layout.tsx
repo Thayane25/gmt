@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { Tabs } from "expo-router";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { Colors } from "@/constants/Style";
-import { account } from "../../infra/user.repository"; // Importa o serviço de autenticação do Appwrite
+import { account } from "../../infra/user.repository"; 
 
 const TabsLayout = () => {
   const [username, setUsername] = useState("");
@@ -11,26 +11,26 @@ const TabsLayout = () => {
   useEffect(() => {
     const fetchUsername = async () => {
       try {
-        const user = await account.get(); // Obtém as informações do usuário logado
-        setUsername(user.name); // Atualiza o estado com o nome do usuário
+        const user = await account.get(); 
+        setUsername(user.name); 
       } catch (error) {
         console.error("Erro ao obter o usuário:", error);
       }
     };
 
-    fetchUsername(); // Chama a função para buscar o nome do usuário
+    fetchUsername(); 
   }, []);
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.primary }}>
-      {/* Header personalizado */}
+     
       <View style={styles.headerContainer}>
         <Text style={styles.greetingText}>Olá, {username || "usuário"}</Text>{" "}
-        {/* Exibe o nome ou um valor padrão */}
+       
         <Feather name="bell" size={24} color="#fff" />
       </View>
 
-      {/* Definindo as tabs */}
+     
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: Colors.accent,
@@ -77,9 +77,9 @@ const TabsLayout = () => {
         <Tabs.Screen
           name="wallet"
           options={{
-            title: 'Carteira',
+            title: 'Carrinho',
             tabBarIcon: ({ focused }) => (
-              <Ionicons name="card" size={30} color={focused ? Colors.accent : '#ccc'} />
+              <Ionicons name="cart" size={30} color={focused ? Colors.accent : '#ccc'} />
             ),
             headerShown: false,
           }}
