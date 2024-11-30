@@ -76,9 +76,9 @@ const TabsLayout = () => {
         <Tabs.Screen
           name="wallet"
           options={{
-            title: 'Carteira',
+            title: 'Carrinho',
             tabBarIcon: ({ focused }) => (
-              <Ionicons name="card" size={30} color={focused ? Colors.accent : '#ccc'} />
+              <Ionicons name="cart" size={30} color={focused ? Colors.accent : '#ccc'} />
             ),
             headerShown: false,
           }}

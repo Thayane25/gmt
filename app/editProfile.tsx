@@ -85,7 +85,7 @@ const EditProfile = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.profileContainer}>
-        <div style={styles.inputContainer}>
+        <View style={styles.inputContainer}>
           <Text style={styles.label}>Nome</Text>
 
           <TextInput
@@ -95,9 +95,9 @@ const EditProfile = () => {
             placeholder="Digite seu nome"
             placeholderTextColor="#888"
           />
-        </div>
+        </View>
 
-        <div style={styles.inputContainer}>
+        <View style={styles.inputContainer}>
           <Text style={styles.label}>E-mail</Text>
 
           <TextInput
@@ -107,10 +107,10 @@ const EditProfile = () => {
             placeholder="Digite seu email"
             placeholderTextColor="#888"
           />
-        </div>
+        </View>
 
         {currentUser?.email != email && (
-          <div style={styles.inputContainer}>
+          <View style={styles.inputContainer}>
             <Text style={styles.label}>Senha</Text>
 
             <TextInput
@@ -121,7 +121,7 @@ const EditProfile = () => {
               secureTextEntry
               placeholderTextColor="#888"
             />
-          </div>
+          </View>
         )}
 
         <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>

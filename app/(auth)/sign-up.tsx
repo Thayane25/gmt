@@ -6,34 +6,30 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Animated,
+  View,
+  ScrollView,
 } from "react-native";
-import { useRouter } from "expo-router"; // Usando o hook do Expo Router
+import { useRouter } from "expo-router"; 
 import { Colors, messageBoxStyle } from "@/constants/Colors";
-import { createUser } from "../../lib/appwrite"; // Certifique-se de importar a função de criação corretamente
+import { createUser } from "../../lib/appwrite";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState<{
-    text: string;
-    style: object;
-  } | null>(null);
+  const [message, setMessage] = useState(null);
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const router = useRouter(); // Hook para navegação
+  const router = useRouter(); 
 
   const handleSignUp = async () => {
     try {
       await createUser(email, password, username);
-
       showMessage({
         text: "Cadastro realizado com sucesso!",
         style: messageBoxStyle.successMessage,
       });
-
-      setTimeout(() => router.push("/sign-in"), 3000); // Redirecionar após a mensagem desaparecer
+      setTimeout(() => router.push("/sign-in"), 3000);
     } catch (error) {
-      console.error("Erro no cadastro:", error.message);
       showMessage({
         text: error.message,
         style: messageBoxStyle.errorMessage,
@@ -41,9 +37,8 @@ const SignUp = () => {
     }
   };
 
-  const showMessage = (message: { text: string; style: object }) => {
+  const showMessage = (message) => {
     setMessage(message);
-
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 500,
@@ -61,60 +56,55 @@ const SignUp = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Crie sua conta!</Text>
-      <Text style={styles.subtitle}>Preencha os campos para se registrar</Text>
+      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+        <View style={styles.card}>
+          <Text style={styles.title}>Crie sua conta!</Text>
+          <Text style={styles.subtitle}>Preencha os campos para se registrar</Text>
 
-      <div style={{ padding: 40 }}>
-        <TextInput
-          style={styles.input}
-          placeholder="Nome de usuário"
-          value={username}
-          onChangeText={setUsername}
-          autoCapitalize="words"
-          placeholderTextColor="#aaa"
-        />
+          <TextInput
+            style={styles.input}
+            placeholder="Nome de usuário"
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="words"
+            placeholderTextColor="#aaa"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            placeholderTextColor="#aaa"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Senha"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            placeholderTextColor="#aaa"
+          />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          placeholderTextColor="#aaa"
-        />
+          <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+            <Text style={styles.buttonText}>Cadastrar</Text>
+          </TouchableOpacity>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Senha"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          placeholderTextColor="#aaa"
-        />
+          <Text style={styles.footerText}>
+            Já tem uma conta?{" "}
+            <Text style={styles.link} onPress={() => router.push("/sign-in")}>
+              Faça login
+            </Text>
+          </Text>
 
-        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>Cadastrar</Text>
-        </TouchableOpacity>
-      </div>
-
-      <Text style={styles.footerText}>
-        Já tem uma conta?{" "}
-        <Text
-          style={styles.link}
-          onPress={() => router.push("/sign-in")} // Redirecionar para login ao clicar
-        >
-          Faça login
-        </Text>
-      </Text>
-
-      {message?.text && (
-        <Animated.View
-          style={[messageBoxStyle.messageContainer, { opacity: fadeAnim }]}
-        >
-          <Text style={message.style}>{message.text}</Text>
-        </Animated.View>
-      )}
+          {message?.text && (
+            <Animated.View style={[messageBoxStyle.messageContainer, { opacity: fadeAnim }]}>
+              <Text style={message.style}>{message.text}</Text>
+            </Animated.View>
+          )}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -122,31 +112,48 @@ const SignUp = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.primary,
+    alignItems: "center",
+  },
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+  },
+  card: {
     backgroundColor: Colors.primary,
+    padding: 20,
+    borderRadius: 15,
+    width: "90%",
+    maxWidth: 400,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 8,
+    alignItems: "center",
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
+    color: Colors.accent,
     fontWeight: "bold",
     marginBottom: 10,
-    color: Colors.white,
   },
   subtitle: {
     fontSize: 16,
-    color: Colors.white,
+    color: "#ccc",
     marginBottom: 20,
+    textAlign: "center",
   },
   input: {
     width: "100%",
-    padding: 15,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    marginBottom: 15,
     backgroundColor: Colors.white,
     color: "#000",
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: "#ddd",
   },
   button: {
     width: "100%",
@@ -157,13 +164,13 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: Colors.white,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
   },
   footerText: {
     marginTop: 20,
     fontSize: 14,
-    color: Colors.white,
+    color: "#ccc",
   },
   link: {
     color: Colors.accent,
@@ -172,3 +179,5 @@ const styles = StyleSheet.create({
 });
 
 export default SignUp;
+
+
